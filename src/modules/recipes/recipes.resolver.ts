@@ -1,35 +1,33 @@
+import { RecipeEntity } from '@core/db/entities/recipe.entity';
+import { PaginatedDto, PaginationParamsDto } from '@dtos/common.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { NewRecipeInput } from './dto/new-recipe.input';
-import { RecipesArgs } from './dto/recipes.args';
-import { Recipe } from './models/recipe.model';
 import { RecipesService } from './recipes.service';
 
 const pubSub = new PubSub();
 
-@Resolver((of) => Recipe)
+@Resolver((of) => RecipeEntity)
 export class RecipesResolver {
   constructor(private readonly recipesService: RecipesService) {}
 
-  @Query((returns) => Recipe)
-  async recipe(@Args('id') id: string): Promise<Recipe> {
-    const recipe = await this.recipesService.findOneById(id);
+  @Query((returns) => RecipeEntity)
+  async recipe(@Args('uuid') uuid: string): Promise<RecipeEntity> {
+    const recipe = await this.recipesService.findOneById(uuid);
     if (!recipe) {
-      throw new NotFoundException(id);
+      throw new NotFoundException(uuid);
     }
     return recipe;
   }
 
-  @Query((returns) => [Recipe])
-  recipes(@Args() recipesArgs: RecipesArgs): Promise<Recipe[]> {
-    return this.recipesService.findAll(recipesArgs);
-  }
+  // @Query((returns) => [RecipeEntity])
+  // recipes(@Args() paginationParams: PaginationParamsDto): Promise<PaginatedDto<RecipeEntity>> {
+  //   return this.recipesService.findAll(paginationParams);
+  // }
 
-  @Mutation((returns) => Recipe)
-  async addRecipe(
-    @Args('newRecipeData') newRecipeData: NewRecipeInput,
-  ): Promise<Recipe> {
+  @Mutation((returns) => RecipeEntity)
+  async addRecipe(@Args('newRecipeData') newRecipeData: NewRecipeInput): Promise<RecipeEntity> {
     const recipe = await this.recipesService.create(newRecipeData);
     pubSub.publish('recipeAdded', { recipeAdded: recipe });
     return recipe;
@@ -40,7 +38,7 @@ export class RecipesResolver {
     return this.recipesService.remove(id);
   }
 
-  @Subscription((returns) => Recipe)
+  @Subscription((returns) => RecipeEntity)
   recipeAdded() {
     return pubSub.asyncIterator('recipeAdded');
   }

@@ -1,0 +1,20 @@
+version: '3.4'
+services:
+  postgres:
+    image: postgres:13-alpine3.14
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: devpassword
+    volumes:
+      - ./.local_dev_data/psql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:latest
+    volumes:
+      - ./.local_dev_data/redis:/data
+    ports:
+      - "6379:6379"

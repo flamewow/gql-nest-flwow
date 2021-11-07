@@ -1,0 +1,20 @@
+export const SEQUELIZE = 'sequelize';
+export const DEVELOPMENT = 'development';
+export const PRODUCTION = 'production';
+export const ACCESS_TOKEN = 'accessToken';
+export const INVITE_TOKEN = 'inviteToken';
+export const REFRESH_TOKEN = 'refreshToken';
+export const RESTORE_PASSWORD_TOKEN = 'restorePasswordToken';
+export const ROLES = 'roles';
+export const DATABASE = 'database';
+export const ASC = 'ASC';
+export const DESC = 'DESC';
+export const FILE = 'file';
+export const COORDINATES = 'coordinates';
+export const DISTANCE = 'distance';
+export const API = 'api';
+export const SEEDS = 'SEEDS';
+export const BLOCK_MEDIA_IN_MESSAGES = 'blockMediaInMessages';
+
+export const JWT_ACCESS = 'JWT_ACCESS';
+export const JWT_INVITE = 'JWT_INVITE';

@@ -3,24 +3,24 @@
 # ------------------------------------------------------
 
 """recipe """
-type Recipe {
-  id: ID!
+type RecipeEntity {
+  uuid: ID!
   title: String!
   description: String
-  creationDate: Date!
   ingredients: [String!]!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 """Date custom scalar type"""
 scalar Date
 
 type Query {
-  recipe(id: String!): Recipe!
-  recipes(skip: Int = 0, take: Int = 25): [Recipe!]!
+  recipe(uuid: String!): RecipeEntity!
 }
 
 type Mutation {
-  addRecipe(newRecipeData: NewRecipeInput!): Recipe!
+  addRecipe(newRecipeData: NewRecipeInput!): RecipeEntity!
   removeRecipe(id: String!): Boolean!
 }
 
@@ -31,5 +31,5 @@ input NewRecipeInput {
 }
 
 type Subscription {
-  recipeAdded: Recipe!
+  recipeAdded: RecipeEntity!
 }
