@@ -3,10 +3,10 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 import { AbstractBaseEntity } from './abstract/abstract-base.entity';
 
 @Entity('recipe')
-@ObjectType({ description: 'recipe ' })
+@ObjectType({ description: 'recipe' })
 export class RecipeEntity extends AbstractBaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  @Field((type) => ID)
+  @Field(() => ID)
   uuid: string;
 
   @Column()
@@ -18,14 +18,14 @@ export class RecipeEntity extends AbstractBaseEntity {
   description?: string;
 
   @Column('text', { array: true })
-  @Field((type) => [String])
+  @Field(() => [String])
   ingredients: string[];
 
   @CreateDateColumn()
-  @Field()
+  @Field(() => Date)
   createdAt: Date;
 
   @UpdateDateColumn()
-  @Field()
+  @Field(() => Date)
   updatedAt: Date;
 }

@@ -4,25 +4,30 @@ import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedCol
 import { AbstractBaseEntity } from './abstract/abstract-base.entity';
 
 @Entity('users')
-@ObjectType({ description: 'users ' })
+@ObjectType({ description: 'user' })
 export class UserEntity extends AbstractBaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  @Field((type) => ID)
+  @Field(() => ID)
   uuid: string;
 
   @Column({ nullable: true })
+  @Field()
   name: string;
 
   @Column({ nullable: false, unique: true })
+  @Field()
   email: string;
 
   @Column({ nullable: false })
+  @Field()
   inviteCode: string;
 
   @Column({ default: 0 })
+  @Field()
   currentCanvas: number;
 
   @Column()
+  @Field()
   role: USER_ROLES_ENUM;
 
   @CreateDateColumn()

@@ -1,6 +1,6 @@
 import { RecipeEntity } from '@core/db/entities/recipe.entity';
-import { PaginatedDto, PaginationParamsDto } from '@dtos/common.dto';
-import { NotFoundException } from '@nestjs/common';
+import { AuthGuard } from '@core/guards/auth.guard';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { NewRecipeInput } from './dto/new-recipe.input';
@@ -8,11 +8,12 @@ import { RecipesService } from './recipes.service';
 
 const pubSub = new PubSub();
 
-@Resolver((of) => RecipeEntity)
+@Resolver(() => RecipeEntity)
 export class RecipesResolver {
   constructor(private readonly recipesService: RecipesService) {}
 
-  @Query((returns) => RecipeEntity)
+  @Query(() => RecipeEntity)
+  @UseGuards(AuthGuard)
   async recipe(@Args('uuid') uuid: string): Promise<RecipeEntity> {
     const recipe = await this.recipesService.findOneById(uuid);
     if (!recipe) {
@@ -21,24 +22,24 @@ export class RecipesResolver {
     return recipe;
   }
 
-  // @Query((returns) => [RecipeEntity])
+  // @Query(() => [RecipeEntity])
   // recipes(@Args() paginationParams: PaginationParamsDto): Promise<PaginatedDto<RecipeEntity>> {
   //   return this.recipesService.findAll(paginationParams);
   // }
 
-  @Mutation((returns) => RecipeEntity)
+  @Mutation(() => RecipeEntity)
   async addRecipe(@Args('newRecipeData') newRecipeData: NewRecipeInput): Promise<RecipeEntity> {
     const recipe = await this.recipesService.create(newRecipeData);
     pubSub.publish('recipeAdded', { recipeAdded: recipe });
     return recipe;
   }
 
-  @Mutation((returns) => Boolean)
+  @Mutation(() => Boolean)
   async removeRecipe(@Args('id') id: string) {
     return this.recipesService.remove(id);
   }
 
-  @Subscription((returns) => RecipeEntity)
+  @Subscription(() => RecipeEntity)
   recipeAdded() {
     return pubSub.asyncIterator('recipeAdded');
   }
