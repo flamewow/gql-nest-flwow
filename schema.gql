@@ -2,6 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""user"""
+type UserEntity {
+  uuid: ID!
+  name: String!
+  email: String!
+  password: String!
+  role: Float!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type SignInResult {
+  user: UserEntity!
+  accessToken: String!
+  refreshToken: String!
+}
+
 """recipe"""
 type RecipeEntity {
   uuid: ID!
@@ -12,14 +32,18 @@ type RecipeEntity {
   updatedAt: Date!
 }
 
-"""Date custom scalar type"""
-scalar Date
-
 type Query {
+  signIn(signInUpInput: SignInUpInput!): SignInResult!
   recipe(uuid: String!): RecipeEntity!
 }
 
+input SignInUpInput {
+  email: String!
+  password: String
+}
+
 type Mutation {
+  signUp(signInUpInput: SignInUpInput!): UserEntity!
   addRecipe(newRecipeData: NewRecipeInput!): RecipeEntity!
   removeRecipe(id: String!): Boolean!
 }

@@ -1,5 +1,5 @@
 import { RecipeEntity } from '@core/db/entities/recipe.entity';
-import { AuthGuard } from '@core/guards/auth.guard';
+import { JwtAuthGuard } from '@core/guards/jwt-auth.guard';
 import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
@@ -13,7 +13,7 @@ export class RecipesResolver {
   constructor(private readonly recipesService: RecipesService) {}
 
   @Query(() => RecipeEntity)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async recipe(@Args('uuid') uuid: string): Promise<RecipeEntity> {
     const recipe = await this.recipesService.findOneById(uuid);
     if (!recipe) {

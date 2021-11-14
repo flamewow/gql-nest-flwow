@@ -20,11 +20,7 @@ export class UserEntity extends AbstractBaseEntity {
 
   @Column({ nullable: false })
   @Field()
-  inviteCode: string;
-
-  @Column({ default: 0 })
-  @Field()
-  currentCanvas: number;
+  password: string;
 
   @Column()
   @Field()

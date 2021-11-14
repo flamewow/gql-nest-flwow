@@ -1,6 +1,5 @@
 import { LogLevel } from '@nestjs/common';
 import { config as dotenvConfig } from 'dotenv';
-import { DEVELOPMENT } from '@core/constants';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 dotenvConfig();

@@ -17,4 +17,4 @@ export const SEEDS = 'SEEDS';
 export const BLOCK_MEDIA_IN_MESSAGES = 'blockMediaInMessages';
 
 export const JWT_ACCESS = 'JWT_ACCESS';
-export const JWT_INVITE = 'JWT_INVITE';
+export const LOCAL = 'LOCAL';
