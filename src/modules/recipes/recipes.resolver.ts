@@ -1,5 +1,5 @@
 import { RecipeEntity } from '@core/db/entities/recipe.entity';
-import { JwtAuthGuard } from '@core/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
 import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';

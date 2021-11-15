@@ -8,10 +8,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { JwtAccessStrategy } from './strategies/jwt.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity]), PassportModule, JwtModule.register({ secret: config.jwtAccessSecret })],
-  providers: [AuthResolver, AuthService, JwtAccessStrategy, HashPasswordService],
+  providers: [AuthResolver, AuthService, HashPasswordService, JwtAccessStrategy, LocalStrategy],
   exports: [JwtAccessStrategy],
 })
 export class AuthModule {}

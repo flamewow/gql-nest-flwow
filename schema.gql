@@ -33,17 +33,17 @@ type RecipeEntity {
 }
 
 type Query {
-  signIn(signInUpInput: SignInUpInput!): SignInResult!
+  signIn(input: SignInInput!): SignInResult!
   recipe(uuid: String!): RecipeEntity!
 }
 
-input SignInUpInput {
+input SignInInput {
   email: String!
-  password: String
+  password: String!
 }
 
 type Mutation {
-  signUp(signInUpInput: SignInUpInput!): UserEntity!
+  signUp(input: SignInInput!): UserEntity!
   addRecipe(newRecipeData: NewRecipeInput!): RecipeEntity!
   removeRecipe(id: String!): Boolean!
 }

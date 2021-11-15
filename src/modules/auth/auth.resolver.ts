@@ -1,21 +1,19 @@
 import { UserEntity } from '@core/db/entities/user.entity';
-import { UnauthorizedException } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { SignInUpInput } from './dto/new-recipe.input';
+import { SignInInput } from './dto/inputs';
 import { AuthService } from './auth.service';
-import { SignInResult } from './dto/sign-in.result';
+import { SignInResult } from './dto/results';
+import { AuthLocalGuard } from './guards/auth-local.guard';
+import { User } from '@core/decorators/user.decorator';
 
 @Resolver(() => UserEntity)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
   @Query(() => SignInResult)
-  async signIn(@Args('signInUpInput') signInUpInput: SignInUpInput): Promise<SignInResult> {
-    const user = await this.authService.verifyUserCredentials(signInUpInput.email, signInUpInput.password);
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-
+  @UseGuards(AuthLocalGuard)
+  async signIn(@User() user: UserEntity, @Args('input') input: SignInInput): Promise<SignInResult> {
     const { uuid, email, role } = user;
     const payload = { uuid, email, role };
     const tokens = await this.authService.generateTokens(payload);
@@ -27,8 +25,8 @@ export class AuthResolver {
   }
 
   @Mutation(() => UserEntity)
-  async signUp(@Args('signInUpInput') signInUpInput: SignInUpInput): Promise<UserEntity> {
-    const user = await this.authService.registerUser(signInUpInput);
+  async signUp(@Args('input') input: SignInInput): Promise<UserEntity> {
+    const user = await this.authService.registerUser(input);
     return user;
   }
 }

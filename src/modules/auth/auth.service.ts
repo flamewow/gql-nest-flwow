@@ -1,7 +1,7 @@
 import { UserEntity } from '@core/db/entities/user.entity';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SignInUpInput } from './dto/new-recipe.input';
+import { SignInInput, SignUpInput } from './dto/inputs';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { ITokens } from './auth.interfaces';
@@ -20,7 +20,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async registerUser(data: SignInUpInput): Promise<UserEntity> {
+  async registerUser(data: SignUpInput): Promise<UserEntity> {
     const user = this.recipeRepository.create(data);
     user.password = await this.hashPasswordService.getHash(data.password);
 

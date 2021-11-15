@@ -4,8 +4,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { LOCAL } from '@core/constants';
 
 @Injectable()
-export class LocalAuthenticationGuard extends AuthGuard(LOCAL) {
-  private logger: Logger = new Logger(LocalAuthenticationGuard.name);
+export class AuthLocalGuard extends AuthGuard(LOCAL) {
+  private logger: Logger = new Logger(AuthLocalGuard.name);
 
   handleRequest(err: any, user: any, info: any) {
     if (info) {
@@ -19,6 +19,8 @@ export class LocalAuthenticationGuard extends AuthGuard(LOCAL) {
 
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req;
+    const req = ctx.getContext().req;
+    req.body = ctx.getArgs();
+    return req;
   }
 }

@@ -14,7 +14,7 @@ export class DateScalar implements CustomScalar<string, Date> {
   }
 
   parseLiteral(ast: ValueNode): Date {
-    if (ast.kind === Kind.INT) {
+    if (ast.kind === Kind.STRING) {
       return new Date(ast.value);
     }
     return null;
