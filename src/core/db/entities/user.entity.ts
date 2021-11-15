@@ -22,7 +22,7 @@ export class UserEntity extends AbstractBaseEntity {
   @Field()
   password: string;
 
-  @Column()
+  @Column({ default: USER_ROLES_ENUM.user })
   @Field()
   role: USER_ROLES_ENUM;
 

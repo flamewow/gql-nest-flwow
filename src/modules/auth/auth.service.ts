@@ -1,5 +1,5 @@
 import { UserEntity } from '@core/db/entities/user.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SignInUpInput } from './dto/new-recipe.input';
 import { Repository } from 'typeorm';
@@ -7,9 +7,12 @@ import { JwtService } from '@nestjs/jwt';
 import { ITokens } from './auth.interfaces';
 import { HashPasswordService } from '@common/services/hash-password.service';
 import { config } from '@core/config';
+import { PG_ERR_CODES } from '@core/db/pg-err-codes';
 
 @Injectable()
 export class AuthService {
+  private logger = new Logger(AuthService.name);
+
   constructor(
     @InjectRepository(UserEntity)
     private recipeRepository: Repository<UserEntity>,
@@ -19,10 +22,17 @@ export class AuthService {
 
   async registerUser(data: SignInUpInput): Promise<UserEntity> {
     const user = this.recipeRepository.create(data);
-    const insertionResults = await this.recipeRepository.insert(user);
-    if (insertionResults) {
-      console.log(insertionResults);
-    }
+    user.password = await this.hashPasswordService.getHash(data.password);
+
+    await this.recipeRepository.insert(user).catch((err) => {
+      const errCode = err.code;
+      if (errCode === PG_ERR_CODES.uniqueViolation) {
+        throw new Error('User with that email already exists');
+      }
+      this.logger.error(`failed with error: ${err}`);
+      throw new Error('Something went wrong');
+    });
+
     return user;
   }
 
