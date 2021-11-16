@@ -18,7 +18,7 @@ export class LoggingPlugin implements ApolloServerPlugin {
 
         if (errors) {
           const errorText = errors.reduce((a, i) => a + i.stack + '\n', '');
-          logger.error(`${opType}: ${respTime}ms \n ${errorText}`);
+          logger.warn(`${opType}: ${respTime}ms \n ${errorText}`);
         } else {
           logger.log(`${opType} ${name?.value}: ${respTime}ms`);
         }
