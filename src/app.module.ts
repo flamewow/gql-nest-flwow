@@ -13,13 +13,28 @@ import { v4 as uuid } from 'uuid';
   imports: [
     LoggerModule.forRoot({
       pinoHttp: {
-        transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : {},
+        transport:
+          process.env.NODE_ENV !== 'production'
+            ? {
+                target: 'pino-pretty',
+                options: {
+                  colorize: true,
+                  ignore: 'pid,hostname',
+                  singleLine: true,
+                  levelFirst: true,
+                  timestampKey: 'time',
+                  translateTime: true,
+                },
+              }
+            : {},
         autoLogging: false,
         genReqId: () => uuid(),
+        useLevel: 'debug',
         serializers: {
-          req: (req: any) => ({ id: req.id, method: req.method }),
-          res: (res: any) => ({ id: res.statusCode }),
+          req: () => undefined, //(req: any) => ({ id: req.id, method: req.method }),
+          res: () => undefined, //(res: any) => ({ id: res.statusCode }),
         },
+        customProps: (req: any) => ({ id: req.id, ts: new Date() }),
       },
     }),
     TypeOrmModule.forRoot(config.databaseConfig),
