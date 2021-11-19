@@ -21,11 +21,9 @@ export class RecipesService {
     return recipe;
   }
 
-  async findAll({ skip, take }: FindManyOptions<RecipeEntity>): Promise<PaginatedDto<RecipeEntity>> {
-    const [rows, count] = await this.recipeRepository.findAndCount({ skip, take });
-    const results = rows.map((i) => i.serialize(RecipeEntity));
-
-    return { skip, take, results, count };
+  async findAll(findOptions?: FindManyOptions<RecipeEntity>): Promise<RecipeEntity[]> {
+    const [rows, count] = await this.recipeRepository.findAndCount();
+    return rows;
   }
 
   async findOneById(uuid: string): Promise<RecipeEntity> {

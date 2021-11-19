@@ -22,10 +22,10 @@ export class RecipesResolver {
     return recipe;
   }
 
-  // @Query(() => [RecipeEntity])
-  // recipes(@Args() paginationParams: PaginationParamsDto): Promise<PaginatedDto<RecipeEntity>> {
-  //   return this.recipesService.findAll(paginationParams);
-  // }
+  @Query(() => [RecipeEntity])
+  async recipes(): Promise<RecipeEntity[]> {
+    return this.recipesService.findAll();
+  }
 
   @Mutation(() => RecipeEntity)
   async addRecipe(@Args('newRecipeData') newRecipeData: NewRecipeInput): Promise<RecipeEntity> {

@@ -6,10 +6,6 @@ import { AbstractBaseEntity } from './abstract/abstract-base.entity';
 @Entity('users')
 @ObjectType({ description: 'user' })
 export class UserEntity extends AbstractBaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  @Field(() => ID)
-  uuid: string;
-
   @Column({ nullable: true })
   @Field()
   name: string;
@@ -25,12 +21,4 @@ export class UserEntity extends AbstractBaseEntity {
   @Column({ default: USER_ROLES_ENUM.user })
   @Field()
   role: USER_ROLES_ENUM;
-
-  @CreateDateColumn()
-  @Field()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  @Field()
-  updatedAt: Date;
 }

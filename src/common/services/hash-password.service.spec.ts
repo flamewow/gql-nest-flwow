@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HashPasswordService } from './hash-password.service';
 
@@ -6,9 +7,11 @@ describe('HashPasswordService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [],
+      imports: [Logger],
       providers: [HashPasswordService],
-    }).compile();
+    })
+      .setLogger(console)
+      .compile();
 
     service = module.get<HashPasswordService>(HashPasswordService);
   });

@@ -1,17 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { config } from '@core/config';
 
 @Injectable()
 export class HashPasswordService {
+  private logger = new Logger(this.constructor.name);
+
   async getHash(password: string, salt = crypto.randomBytes(64).toString('base64'), N = config.passwordHash.N): Promise<string> {
+    const logger = this.logger;
+
     return new Promise(function (resolve, reject) {
       crypto.scrypt(password, salt, 64, { N }, function (err, result) {
         if (err) {
-          console.error(err);
+          logger.error(err);
           reject(err);
         }
-        resolve(`${N}$${salt}$${result.toString('hex')}`);
+
+        const output = `${N}$${salt}$${result.toString('hex')}`;
+        logger.debug(output);
+
+        resolve(output);
       });
     });
   }
