@@ -1,7 +1,8 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Paginated } from '../misc/paginated';
 import { AbstractBaseEntity } from './abstract/abstract-base.entity';
+import { CuisineEntity } from './cuisine.entity';
 
 @Entity('recipe')
 @ObjectType({ description: 'recipe' })
@@ -17,6 +18,12 @@ export class RecipeEntity extends AbstractBaseEntity {
   @Column('text', { array: true })
   @Field(() => [String])
   ingredients: string[];
+
+  @Column('uuid', { nullable: false })
+  cuisineUUID: string;
+  @ManyToOne(() => CuisineEntity, (cuisine) => cuisine.recipies)
+  @JoinColumn({ name: 'cuisineUUID' })
+  cuisine: CuisineEntity;
 }
 
 @ObjectType()

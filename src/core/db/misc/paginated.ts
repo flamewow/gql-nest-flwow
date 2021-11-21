@@ -18,7 +18,6 @@ export function Paginated<T>(classRef: Type<T>): Type<IPaginatedType<T>> {
   abstract class EdgeType {
     @Field(() => String)
     cursor: string;
-
     @Field(() => classRef)
     node: T;
   }

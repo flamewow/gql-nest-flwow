@@ -38,6 +38,8 @@ type RecipeEntity {
   title: String!
   description: String
   ingredients: [String!]!
+  cuisineUUID: String!
+  cuisine: CuisineEntity!
 }
 
 type PaginatedRecipe {
@@ -50,8 +52,28 @@ type RecipeEntityEdge {
   node: RecipeEntity!
 }
 
+"""cuisine"""
+type CuisineEntity {
+  uuid: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+  recipies(first: Int, after: String, last: Int, before: String): [RecipeEntity!]!
+}
+
+type PaginatedCuisine {
+  edges: [CuisineEntityEdge!]
+  paginationInfo: PaginationInfo
+}
+
+type CuisineEntityEdge {
+  cursor: String!
+  node: CuisineEntity!
+}
+
 type Query {
   signIn(input: SignInInput!): SignInResult!
+  cuisines(first: Int, after: String, last: Int, before: String): PaginatedCuisine!
   recipe(uuid: String!): RecipeEntity!
   recipes(first: Int, after: String, last: Int, before: String): PaginatedRecipe!
 }
@@ -63,11 +85,13 @@ input SignInInput {
 
 type Mutation {
   signUp(input: SignInInput!): UserEntity!
+  addCuisine(name: String!): CuisineEntity!
   addRecipe(newRecipeData: NewRecipeInput!): RecipeEntity!
   removeRecipe(id: String!): Boolean!
 }
 
 input NewRecipeInput {
+  cuisineUUID: String!
   title: String!
   description: String
   ingredients: [String!]!
