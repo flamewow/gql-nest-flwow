@@ -1,9 +1,10 @@
-import { RecipeEntity } from '@core/db/entities/recipe.entity';
+import { PaginatedRecipe, RecipeEntity } from '@core/db/entities/recipe.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NewRecipeInput } from './dto/new-recipe.input';
 import { FindManyOptions, Repository } from 'typeorm';
-import { PaginatedDto } from '@dtos/common.dto';
+import { paginate } from '@core/db/misc/paginate';
+import { PaginationArgs } from '@core/db/misc/pagination-args';
 
 @Injectable()
 export class RecipesService {
@@ -19,6 +20,12 @@ export class RecipesService {
       console.log(insertionResults);
     }
     return recipe;
+  }
+
+  async paginated(pagination: PaginationArgs): Promise<PaginatedRecipe> {
+    const query = this.recipeRepository.createQueryBuilder().select();
+    const output = await paginate(query, pagination);
+    return output;
   }
 
   async findAll(findOptions?: FindManyOptions<RecipeEntity>): Promise<RecipeEntity[]> {

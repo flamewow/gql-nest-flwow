@@ -1,4 +1,5 @@
-import { RecipeEntity } from '@core/db/entities/recipe.entity';
+import { PaginatedRecipe, RecipeEntity } from '@core/db/entities/recipe.entity';
+import { PaginationArgs } from '@core/db/misc/pagination-args';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
 import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
@@ -22,9 +23,9 @@ export class RecipesResolver {
     return recipe;
   }
 
-  @Query(() => [RecipeEntity])
-  async recipes(): Promise<RecipeEntity[]> {
-    return this.recipesService.findAll();
+  @Query(() => PaginatedRecipe)
+  async recipes(@Args() pagination: PaginationArgs): Promise<PaginatedRecipe> {
+    return this.recipesService.paginated(pagination);
   }
 
   @Mutation(() => RecipeEntity)

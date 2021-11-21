@@ -1,5 +1,6 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Entity, Column } from 'typeorm';
+import { Paginated } from '../misc/paginated';
 import { AbstractBaseEntity } from './abstract/abstract-base.entity';
 
 @Entity('recipe')
@@ -17,3 +18,6 @@ export class RecipeEntity extends AbstractBaseEntity {
   @Field(() => [String])
   ingredients: string[];
 }
+
+@ObjectType()
+export class PaginatedRecipe extends Paginated(RecipeEntity) {}

@@ -47,6 +47,7 @@ class Config {
       migrationsDir: './src/db/migrations',
     },
     synchronize: true, // Do not use in production
+    logging: process.env.NODE_ENV !== 'production' ? true : false,
   };
 }
 

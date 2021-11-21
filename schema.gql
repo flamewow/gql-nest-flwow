@@ -22,6 +22,14 @@ type SignInResult {
   refreshToken: String!
 }
 
+type PaginationInfo {
+  startCursor: String
+  endCursor: String
+  countTotal: Int!
+  countBefore: Int
+  countAfter: Int
+}
+
 """recipe"""
 type RecipeEntity {
   uuid: ID!
@@ -32,10 +40,20 @@ type RecipeEntity {
   ingredients: [String!]!
 }
 
+type PaginatedRecipe {
+  edges: [RecipeEntityEdge!]
+  paginationInfo: PaginationInfo
+}
+
+type RecipeEntityEdge {
+  cursor: String!
+  node: RecipeEntity!
+}
+
 type Query {
   signIn(input: SignInInput!): SignInResult!
   recipe(uuid: String!): RecipeEntity!
-  recipes: [RecipeEntity!]!
+  recipes(first: Int, after: String, last: Int, before: String): PaginatedRecipe!
 }
 
 input SignInInput {
