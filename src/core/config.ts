@@ -29,6 +29,7 @@ class Config {
   readonly redisCacheDB: number = 1;
   readonly cacheGlobalTTL: number = 60;
   readonly redisIODB: number = 2;
+  readonly maxAllowedComplexity: number = 20;
 
   readonly logLevels: LogLevel[] = <LogLevel[]>process.env.LOG_LEVELS.split(',');
 

@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { NewRecipeInput } from './dto/new-recipe.input';
 import { FindConditions, FindManyOptions, Repository } from 'typeorm';
 import { paginate } from '@core/db/misc/paginate';
-import { PaginationArgs } from '@core/db/misc/pagination-args';
+import { PaginationCursorArgs } from '@core/db/misc/pagination-args';
 
 @Injectable()
 export class RecipesService {
@@ -24,7 +24,7 @@ export class RecipesService {
     return recipe;
   }
 
-  async paginated(pagination: PaginationArgs, findConditions?: FindConditions<RecipeEntity>): Promise<PaginatedRecipe> {
+  async paginated(pagination: PaginationCursorArgs, findConditions?: FindConditions<RecipeEntity>): Promise<PaginatedRecipe> {
     const query = this.recipeRepository.createQueryBuilder().select().where(findConditions);
     const output = await paginate(query, pagination);
     return output;

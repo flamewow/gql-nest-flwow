@@ -1,8 +1,8 @@
 import { PaginationInfo } from './page-info';
 import { SelectQueryBuilder, MoreThan, LessThan } from 'typeorm';
-import { PaginationArgs } from './pagination-args';
+import { PaginationCursorArgs } from './pagination-args';
 
-export async function paginate<T>(query: SelectQueryBuilder<T>, paginationArgs: PaginationArgs, cursorColumn = 'uuid', defaultLimit = 25): Promise<any> {
+export async function paginate<T>(query: SelectQueryBuilder<T>, paginationArgs: PaginationCursorArgs, cursorColumn = 'uuid', defaultLimit = 25): Promise<any> {
   query.orderBy({ [cursorColumn]: 'DESC' });
   const initialQuery = query.clone();
 

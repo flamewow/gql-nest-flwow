@@ -1,5 +1,5 @@
 import { CuisineEntity, PaginatedCuisine } from '@core/db/entities/cuisine.entity';
-import { PaginationArgs } from '@core/db/misc/pagination-args';
+import { PaginationCursorArgs } from '@core/db/misc/pagination-args';
 import { Logger } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CuisinesService } from './cuisines.service';
@@ -12,7 +12,7 @@ export class CuisinesResolver {
   constructor(private readonly cuisinesService: CuisinesService, private readonly recipiesService: RecipesService) {}
 
   @Query(() => PaginatedCuisine)
-  async cuisines(@Args() pagination: PaginationArgs): Promise<PaginatedCuisine> {
+  async cuisines(@Args() pagination: PaginationCursorArgs): Promise<PaginatedCuisine> {
     return this.cuisinesService.paginated(pagination);
   }
 
@@ -23,7 +23,7 @@ export class CuisinesResolver {
   }
 
   @ResolveField()
-  async recipies(@Args() pagination: PaginationArgs, @Parent() cuisine: CuisineEntity) {
+  async recipies(@Args() pagination: PaginationCursorArgs, @Parent() cuisine: CuisineEntity) {
     const { uuid } = cuisine;
     this.logger.log(`pagination args: ${JSON.stringify(pagination)}`);
     return this.recipiesService.findAll({ where: { cuisineUUID: uuid } });

@@ -1,7 +1,7 @@
 import { ArgsType, Int, Field } from '@nestjs/graphql';
 
 @ArgsType()
-export class PaginationArgs {
+export class PaginationCursorArgs {
   @Field(() => Int, { nullable: true })
   first: number;
 

@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { paginate } from '@core/db/misc/paginate';
-import { PaginationArgs } from '@core/db/misc/pagination-args';
+import { PaginationCursorArgs } from '@core/db/misc/pagination-args';
 import { CuisineEntity, PaginatedCuisine } from '@core/db/entities/cuisine.entity';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class CuisinesService {
     return cuisine;
   }
 
-  async paginated(pagination: PaginationArgs): Promise<PaginatedCuisine> {
+  async paginated(pagination: PaginationCursorArgs): Promise<PaginatedCuisine> {
     const query = this.cuisineRepository.createQueryBuilder().select();
     const output = await paginate(query, pagination);
     return output;

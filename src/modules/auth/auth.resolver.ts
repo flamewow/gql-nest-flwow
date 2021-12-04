@@ -13,12 +13,12 @@ export class AuthResolver {
 
   @Query(() => SignInResult)
   @UseGuards(AuthLocalGuard)
-  async signIn(@User() user: UserEntity, @Args('input') input: SignInInput): Promise<SignInResult> {
+  async signIn(@User() user: UserEntity): Promise<SignInResult> {
     const { uuid, email, role } = user;
     const payload = { uuid, email, role };
     const tokens = await this.authService.generateTokens(payload);
 
-    return {
+    return <SignInResult>{
       user,
       ...tokens,
     };
