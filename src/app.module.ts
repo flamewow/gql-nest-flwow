@@ -11,6 +11,24 @@ import { v4 as uuid } from 'uuid';
 
 @Module({
   imports: [
+    AuthModule,
+    RecipesModule,
+    TypeOrmModule.forRoot(config.databaseConfig),
+    GraphQLModule.forRoot({
+      installSubscriptionHandlers: true,
+      autoSchemaFile: 'schema.gql',
+    }),
+    // GraphQLModule.forRootAsync({
+    //   imports: [RecipesModule],
+    //   inject: [UsersService],
+    //   useFactory: (usersService: UsersService) => ({
+    //     playground: Boolean(configService.get('GRAPHQL_PLAYGROUND')),
+    //     autoSchemaFile: 'schema.gql',
+    //     context: () => ({
+    //       batchAuthorsLoader: batchAuthorsLoader(usersService),
+    //     }),
+    //   }),
+    // }),
     LoggerModule.forRoot({
       pinoHttp: {
         transport:
@@ -37,13 +55,6 @@ import { v4 as uuid } from 'uuid';
         customProps: (req: any) => ({ id: req.id, ts: new Date() }),
       },
     }),
-    TypeOrmModule.forRoot(config.databaseConfig),
-    GraphQLModule.forRoot({
-      installSubscriptionHandlers: true,
-      autoSchemaFile: 'schema.gql',
-    }),
-    AuthModule,
-    RecipesModule,
   ],
   providers: [ComplexityPlugin, LoggingPlugin],
 })

@@ -6,11 +6,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CuisinesResolver } from './cuisines.resolver';
 import { CuisinesService } from './cuisines.service';
+import { RecipesLoaders } from './recipes.loader';
 import { RecipesResolver } from './recipes.resolver';
 import { RecipesService } from './recipes.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CuisineEntity, RecipeEntity]), AuthModule],
-  providers: [CuisinesResolver, CuisinesService, RecipesResolver, RecipesService, DateScalar],
+  providers: [CuisinesResolver, CuisinesService, RecipesResolver, RecipesService, RecipesLoaders, DateScalar],
 })
 export class RecipesModule {}

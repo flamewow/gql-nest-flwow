@@ -72,15 +72,10 @@ type CuisineEntityEdge {
 }
 
 type Query {
-  signIn(input: SignInInput!): SignInResult!
+  signIn: SignInResult!
   cuisines(first: Int, after: String, last: Int, before: String): PaginatedCuisine!
   recipe(uuid: String!): RecipeEntity!
   recipes(first: Int, after: String, last: Int, before: String): PaginatedRecipe!
-}
-
-input SignInInput {
-  email: String!
-  password: String!
 }
 
 type Mutation {
@@ -88,6 +83,11 @@ type Mutation {
   addCuisine(name: String!): CuisineEntity!
   addRecipe(newRecipeData: NewRecipeInput!): RecipeEntity!
   removeRecipe(id: String!): Boolean!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
 }
 
 input NewRecipeInput {

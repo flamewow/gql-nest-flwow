@@ -1,4 +1,3 @@
-import { PaginatedRecipe } from '@core/db/entities/recipe.entity';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
