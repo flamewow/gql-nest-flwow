@@ -1,6 +1,6 @@
 import { USER_ROLES_ENUM } from '@core/enums';
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { ObjectType, Field } from '@nestjs/graphql';
+import { Entity, Column } from 'typeorm';
 import { AbstractBaseEntity } from './abstract/abstract-base.entity';
 
 @Entity('users')

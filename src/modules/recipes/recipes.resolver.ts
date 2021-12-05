@@ -1,17 +1,16 @@
+import { CuisineEntity } from '@core/db/entities/cuisine.entity';
 import { PaginatedRecipe, RecipeEntity } from '@core/db/entities/recipe.entity';
 import { PaginationCursorArgs } from '@core/db/misc/pagination-args';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
 import { NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { PubSub } from 'graphql-subscriptions';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { CuisinesLoader } from './cuisines.loader';
 import { NewRecipeInput } from './dto/new-recipe.input';
 import { RecipesService } from './recipes.service';
 
-const pubSub = new PubSub();
-
 @Resolver(() => RecipeEntity)
 export class RecipesResolver {
-  constructor(private readonly recipesService: RecipesService) {}
+  constructor(private recipesService: RecipesService, private cuisinesLoader: CuisinesLoader) {}
 
   @Query(() => RecipeEntity)
   @UseGuards(JwtAuthGuard)
@@ -31,7 +30,6 @@ export class RecipesResolver {
   @Mutation(() => RecipeEntity)
   async addRecipe(@Args('newRecipeData') newRecipeData: NewRecipeInput): Promise<RecipeEntity> {
     const recipe = await this.recipesService.create(newRecipeData);
-    pubSub.publish('recipeAdded', { recipeAdded: recipe });
     return recipe;
   }
 
@@ -40,8 +38,10 @@ export class RecipesResolver {
     return this.recipesService.remove(id);
   }
 
-  @Subscription(() => RecipeEntity)
-  recipeAdded() {
-    return pubSub.asyncIterator('recipeAdded');
+  @ResolveField(() => CuisineEntity)
+  async cuisine(@Args() pagination: PaginationCursorArgs, @Parent() recipe: RecipeEntity): Promise<CuisineEntity> {
+    const { cuisineUUID } = recipe;
+    const cuisines = await this.cuisinesLoader.batchCuisines.load(cuisineUUID);
+    return cuisines;
   }
 }

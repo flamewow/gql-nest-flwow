@@ -4,7 +4,7 @@ import { RecipesService } from './recipes.service';
 import { In } from 'typeorm';
 
 @Injectable({ scope: Scope.REQUEST })
-export class RecipesLoaders {
+export class RecipesLoader {
   constructor(private recipesService: RecipesService) {}
 
   public readonly batchCuisineRecipes = new DataLoader(async (cuisineUUIDs: string[]) => {

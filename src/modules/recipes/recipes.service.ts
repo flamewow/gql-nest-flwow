@@ -2,7 +2,7 @@ import { PaginatedRecipe, RecipeEntity } from '@core/db/entities/recipe.entity';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NewRecipeInput } from './dto/new-recipe.input';
-import { FindConditions, FindManyOptions, Repository, In } from 'typeorm';
+import { FindConditions, FindManyOptions, Repository } from 'typeorm';
 import { paginate } from '@core/db/misc/paginate';
 import { PaginationCursorArgs } from '@core/db/misc/pagination-args';
 
@@ -40,6 +40,7 @@ export class RecipesService {
   }
 
   async remove(uuid: string): Promise<boolean> {
-    return true;
+    const { affected } = await this.recipeRepository.delete(uuid);
+    return !!affected;
   }
 }
