@@ -6,10 +6,7 @@ import { JWT_ACCESS } from '@core/constants';
 import { AuthService } from '@modules/auth/auth.service';
 import { Request } from 'express';
 import { UserEntity } from '@core/db/entities/user.entity';
-
-export interface IJWTPayload {
-  uuid: string;
-}
+import { IJwtPayload } from '../auth.interfaces';
 
 @Injectable()
 export class JwtAccessStrategy extends PassportStrategy(Strategy, JWT_ACCESS) {
@@ -25,7 +22,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, JWT_ACCESS) {
     });
   }
 
-  async validate({ uuid }: IJWTPayload): Promise<UserEntity | null> {
+  async validate({ uuid }: IJwtPayload): Promise<UserEntity | null> {
     return this.authService.findUserByUUID(uuid);
   }
 }

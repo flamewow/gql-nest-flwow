@@ -1,11 +1,9 @@
 import { Logger } from 'nestjs-pino';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import { INestApplication } from '@nestjs/common';
 
-export function setupApp(app: NestExpressApplication): NestExpressApplication {
+export async function setupApp(app: INestApplication): Promise<INestApplication> {
   app.useLogger(app.get(Logger));
 
-  app.useStaticAssets(`${process.cwd()}/static`);
-  app.useStaticAssets(`${process.cwd()}/src/core/swagger/frontend`);
-
+  // do the app setup here (setupApp func is separated from bootstrap func to be used in e2e tests)
   return app;
 }

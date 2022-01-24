@@ -13,7 +13,7 @@ export class LoggingPlugin implements ApolloServerPlugin {
       async willSendResponse() {
         const respTime = new Date().getTime() - startTime.getTime();
         const { errors } = ctx;
-        const opType = ctx?.operation?.operation || 'unknow operation';
+        const opType = ctx?.operation?.operation || 'unknown operation';
         const name = ctx?.operation?.name;
 
         if (errors) {

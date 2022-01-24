@@ -52,7 +52,12 @@ export class AuthService {
     return isCredentialsValid ? user : null;
   }
 
-  async generateTokens(payload: Record<string, string | number | boolean>): Promise<ITokens> {
+  async generateTokens4User(user: UserEntity): Promise<ITokens> {
+    const { uuid, email, role } = user;
+    return this.generateTokens({ uuid, email, role });
+  }
+
+  private async generateTokens(payload: Record<string, string | number | boolean>): Promise<ITokens> {
     return {
       accessToken: await this.jwtService.signAsync(payload, { expiresIn: config.jwtAccessExpiresIn }),
       refreshToken: await this.jwtService.signAsync(payload, { expiresIn: config.jwtRefreshExpiresIn, secret: config.jwtRefreshSecret }),

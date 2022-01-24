@@ -33,8 +33,8 @@ class Config {
       entitiesDir: './src/db/entities',
       migrationsDir: './src/db/migrations',
     },
-    synchronize: true, // Do not use in production
-    logging: process.env.NODE_ENV !== 'production' ? true : false,
+    synchronize: true, // TODO: remove it once db schema is stabilized
+    logging: false, // set to true for SQL queries debugging
   };
 }
 

@@ -11,7 +11,7 @@ import { RecipesService } from './recipes.service';
 export class CuisinesResolver {
   public logger = new Logger(this.constructor.name);
 
-  constructor(private readonly cuisinesService: CuisinesService, private readonly recipiesService: RecipesService, private recipesLoader: RecipesLoader) {}
+  constructor(private readonly cuisinesService: CuisinesService, private readonly recipesService: RecipesService, private recipesLoader: RecipesLoader) {}
 
   @Query(() => PaginatedCuisine)
   async cuisines(@Args() pagination: PaginationCursorArgs): Promise<PaginatedCuisine> {
@@ -25,7 +25,7 @@ export class CuisinesResolver {
   }
 
   @ResolveField(() => [RecipeEntity])
-  async recipies(@Args() pagination: PaginationCursorArgs, @Parent() cuisine: CuisineEntity): Promise<RecipeEntity[]> {
+  async recipes(@Args() pagination: PaginationCursorArgs, @Parent() cuisine: CuisineEntity): Promise<RecipeEntity[]> {
     const { uuid } = cuisine;
     const recipes = await this.recipesLoader.batchCuisineRecipes.load(uuid);
     return recipes;

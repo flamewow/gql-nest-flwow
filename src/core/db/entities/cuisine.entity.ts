@@ -13,7 +13,7 @@ export class CuisineEntity extends AbstractBaseEntity {
 
   @OneToMany(() => RecipeEntity, (recipe) => recipe.cuisine)
   @Field(() => [RecipeEntity], { nullable: true })
-  recipies: RecipeEntity[];
+  recipes: RecipeEntity[];
 }
 
 @ObjectType()

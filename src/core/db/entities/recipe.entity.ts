@@ -21,7 +21,7 @@ export class RecipeEntity extends AbstractBaseEntity {
 
   @Column('uuid', { nullable: false })
   cuisineUUID: string;
-  @ManyToOne(() => CuisineEntity, (cuisine) => cuisine.recipies)
+  @ManyToOne(() => CuisineEntity, (cuisine) => cuisine.recipes)
   @JoinColumn({ name: 'cuisineUUID' })
   @Field(() => CuisineEntity)
   cuisine: CuisineEntity;

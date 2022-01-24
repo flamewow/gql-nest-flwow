@@ -64,7 +64,7 @@ type CuisineEntity {
   createdAt: Date!
   updatedAt: Date!
   name: String!
-  recipies(first: Int, after: String, last: Int, before: String): [RecipeEntity!]
+  recipes(first: Int, after: String, last: Int, before: String): [RecipeEntity!]
 }
 
 type PaginatedCuisine {

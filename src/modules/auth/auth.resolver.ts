@@ -15,10 +15,7 @@ export class AuthResolver {
   @Mutation(() => SignInResult)
   @UseGuards(AuthLocalGuard)
   async signIn(@Args('input') input: SignInInput, @User() user: UserEntity): Promise<SignInResult> {
-    const { uuid, email, role } = user;
-    const payload = { uuid, email, role };
-    const tokens = await this.authService.generateTokens(payload);
-
+    const tokens = await this.authService.generateTokens4User(user);
     return { user, ...tokens };
   }
 
@@ -31,13 +28,7 @@ export class AuthResolver {
   @Mutation(() => RefreshTokenResult)
   @UseGuards(JwtRefreshGuard)
   async refreshToken(@Args('refreshToken') refreshToken: string, @User() user: UserEntity): Promise<SignInResult> {
-    const { uuid, email, role } = user;
-    const payload = { uuid, email, role };
-    const tokens = await this.authService.generateTokens(payload);
-
-    return {
-      user,
-      ...tokens,
-    };
+    const tokens = await this.authService.generateTokens4User(user);
+    return { user, ...tokens };
   }
 }
