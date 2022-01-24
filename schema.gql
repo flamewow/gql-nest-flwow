@@ -22,6 +22,12 @@ type SignInResult {
   refreshToken: String!
 }
 
+type RefreshTokenResult {
+  user: UserEntity!
+  accessToken: String!
+  refreshToken: String!
+}
+
 type PaginationInfo {
   startCursor: String
   endCursor: String
@@ -72,20 +78,26 @@ type CuisineEntityEdge {
 }
 
 type Query {
-  signIn: SignInResult!
   cuisines(first: Int, after: String, last: Int, before: String): PaginatedCuisine!
   recipe(uuid: String!): RecipeEntity!
   recipes(first: Int, after: String, last: Int, before: String): PaginatedRecipe!
 }
 
 type Mutation {
-  signUp(input: SignInInput!): UserEntity!
+  signIn(input: SignInInput!): SignInResult!
+  signUp(input: SignUpInput!): UserEntity!
+  refreshToken(refreshToken: String!): RefreshTokenResult!
   addCuisine(name: String!): CuisineEntity!
   addRecipe(newRecipeData: NewRecipeInput!): RecipeEntity!
   removeRecipe(id: String!): Boolean!
 }
 
 input SignInInput {
+  email: String!
+  password: String!
+}
+
+input SignUpInput {
   email: String!
   password: String!
 }

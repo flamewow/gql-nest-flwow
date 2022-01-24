@@ -15,21 +15,12 @@ import { v4 as uuid } from 'uuid';
     RecipesModule,
     TypeOrmModule.forRoot(config.databaseConfig),
     GraphQLModule.forRoot({
+      // TODO: move to config
       installSubscriptionHandlers: true,
       autoSchemaFile: 'schema.gql',
     }),
-    // GraphQLModule.forRootAsync({
-    //   imports: [RecipesModule],
-    //   inject: [UsersService],
-    //   useFactory: (usersService: UsersService) => ({
-    //     playground: Boolean(configService.get('GRAPHQL_PLAYGROUND')),
-    //     autoSchemaFile: 'schema.gql',
-    //     context: () => ({
-    //       batchAuthorsLoader: batchAuthorsLoader(usersService),
-    //     }),
-    //   }),
-    // }),
     LoggerModule.forRoot({
+      // TODO: move to config
       pinoHttp: {
         transport:
           process.env.NODE_ENV !== 'production'

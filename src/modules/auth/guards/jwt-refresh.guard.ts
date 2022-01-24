@@ -19,6 +19,8 @@ export class JwtRefreshGuard extends AuthGuard(JWT_REFRESH) {
 
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req;
+    const req = ctx.getContext().req;
+    req.body = ctx.getArgs();
+    return req;
   }
 }

@@ -12,3 +12,6 @@ export class SignInResult {
   @Field()
   refreshToken: string;
 }
+
+@ObjectType()
+export class RefreshTokenResult extends SignInResult {}

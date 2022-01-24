@@ -1,32 +1,43 @@
 import { UserEntity } from '@core/db/entities/user.entity';
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { SignInInput } from './dto/inputs';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { SignInInput, SignUpInput } from './dto/inputs';
 import { AuthService } from './auth.service';
-import { SignInResult } from './dto/results';
+import { RefreshTokenResult, SignInResult } from './dto/results';
 import { AuthLocalGuard } from './guards/auth-local.guard';
 import { User } from '@core/decorators/user.decorator';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 @Resolver(() => UserEntity)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Query(() => SignInResult)
+  @Mutation(() => SignInResult)
   @UseGuards(AuthLocalGuard)
-  async signIn(@User() user: UserEntity): Promise<SignInResult> {
+  async signIn(@Args('input') input: SignInInput, @User() user: UserEntity): Promise<SignInResult> {
     const { uuid, email, role } = user;
     const payload = { uuid, email, role };
     const tokens = await this.authService.generateTokens(payload);
 
-    return <SignInResult>{
-      user,
-      ...tokens,
-    };
+    return { user, ...tokens };
   }
 
   @Mutation(() => UserEntity)
-  async signUp(@Args('input') input: SignInInput): Promise<UserEntity> {
+  async signUp(@Args('input') input: SignUpInput): Promise<UserEntity> {
     const user = await this.authService.registerUser(input);
     return user;
+  }
+
+  @Mutation(() => RefreshTokenResult)
+  @UseGuards(JwtRefreshGuard)
+  async refreshToken(@Args('refreshToken') refreshToken: string, @User() user: UserEntity): Promise<SignInResult> {
+    const { uuid, email, role } = user;
+    const payload = { uuid, email, role };
+    const tokens = await this.authService.generateTokens(payload);
+
+    return {
+      user,
+      ...tokens,
+    };
   }
 }
