@@ -1,13 +1,15 @@
 import { CuisineEntity, PaginatedCuisine } from '@core/db/entities/cuisine.entity';
 import { RecipeEntity } from '@core/db/entities/recipe.entity';
 import { PaginationCursorArgs } from '@core/db/misc/pagination-args';
-import { Logger } from '@nestjs/common';
+import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CuisinesService } from './cuisines.service';
 import { RecipesLoader } from './recipes.loader';
 import { RecipesService } from './recipes.service';
 
 @Resolver(() => CuisineEntity)
+@UseGuards(JwtAuthGuard)
 export class CuisinesResolver {
   public logger = new Logger(this.constructor.name);
 

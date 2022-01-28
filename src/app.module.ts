@@ -16,8 +16,11 @@ import { v4 as uuid } from 'uuid';
     TypeOrmModule.forRoot(config.databaseConfig),
     GraphQLModule.forRoot({
       // TODO: move to config
-      installSubscriptionHandlers: true,
       autoSchemaFile: 'schema.gql',
+      installSubscriptionHandlers: true,
+      // subscriptions: {
+      //   'graphql-ws': true,
+      // },
     }),
     LoggerModule.forRoot({
       // TODO: move to config

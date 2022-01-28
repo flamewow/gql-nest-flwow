@@ -9,11 +9,11 @@ import { NewRecipeInput } from './dto/new-recipe.input';
 import { RecipesService } from './recipes.service';
 
 @Resolver(() => RecipeEntity)
+@UseGuards(JwtAuthGuard)
 export class RecipesResolver {
   constructor(private recipesService: RecipesService, private cuisinesLoader: CuisinesLoader) {}
 
   @Query(() => RecipeEntity)
-  @UseGuards(JwtAuthGuard)
   async recipe(@Args('uuid') uuid: string): Promise<RecipeEntity> {
     const recipe = await this.recipesService.findOneById(uuid);
     if (!recipe) {

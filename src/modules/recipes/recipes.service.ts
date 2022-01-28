@@ -16,7 +16,7 @@ export class RecipesService {
   ) {}
 
   async create(data: NewRecipeInput): Promise<RecipeEntity> {
-    const recipe = await this.recipeRepository.create(data);
+    const recipe = this.recipeRepository.create(data);
     const insertionResults = await this.recipeRepository.insert(recipe);
     if (insertionResults) {
       this.logger.log(insertionResults);

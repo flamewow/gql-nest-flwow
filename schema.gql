@@ -108,3 +108,7 @@ input NewRecipeInput {
   description: String
   ingredients: [String!]!
 }
+
+type Subscription {
+  userSignedIn: UserEntity!
+}
