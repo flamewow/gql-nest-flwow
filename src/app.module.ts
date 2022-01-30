@@ -17,7 +17,7 @@ import { v4 as uuid } from 'uuid';
     GraphQLModule.forRoot({
       // TODO: move to config
       autoSchemaFile: 'schema.gql',
-      installSubscriptionHandlers: true,
+      installSubscriptionHandlers: true, // enabled for graphql playground
       // subscriptions: {
       //   'graphql-ws': true,
       // },

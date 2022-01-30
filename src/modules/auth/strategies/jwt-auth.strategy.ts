@@ -12,12 +12,7 @@ import { IJwtPayload } from '../auth.interfaces';
 export class JwtAccessStrategy extends PassportStrategy(Strategy, JWT_ACCESS) {
   constructor(private authService: AuthService) {
     super({
-      jwtFromRequest:
-        ExtractJwt.fromExtractors([
-          (req: Request) => {
-            return req?.cookies?.Authentication;
-          },
-        ]) || ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken() || ExtractJwt.fromExtractors([(req: Request) => req?.cookies?.Authentication]),
       secretOrKey: config.jwtAccessSecret,
     });
   }
